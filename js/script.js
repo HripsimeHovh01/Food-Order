@@ -36,10 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   //tabs end
-
+  
   //timer start
-  // day, hours, minutes, second
-
   const deadline = "2024-09-20 18:20";
 
   const setZero = (n) => (n >= 0 && n < 10 ? `0${n}` : n);
@@ -60,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
       seconds = Math.floor((total / 1000) % 60);
     }
 
-    return {total, days, hours, minutes, seconds};
+    return { total, days, hours, minutes, seconds };
   }
   function setTimer(selector, endtime) {
     const timer = document.querySelector(selector);
@@ -74,7 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTimer();
 
     function updateTimer() {
-      const {total, days, hours, minutes, seconds} = getTimeRemaining(endtime);
+      const { total, days, hours, minutes, seconds } =
+        getTimeRemaining(endtime);
       daysElem.innerHTML = setZero(days);
       hoursElem.innerHTML = setZero(hours);
       minutesElem.innerHTML = setZero(minutes);
@@ -87,4 +86,52 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   setTimer(".timer", deadline);
   //tabs end
+
+  //modal start
+  const modalOpenTriggers = document.querySelectorAll("[data-modal-trigger]");
+  const modalCloseTrigger = document.querySelector("[data-modal-close]");
+  const modal = document.querySelector(".modal");
+
+function showModal(){
+  modal.classList.add("show");
+  modal.classList.remove("hide");
+  document.body.style.overflowY = "hidden";
+  clearTimeout(modalTimerId);
+};
+
+  function closeModal(){
+    modal.classList.remove("show");
+    modal.classList.add("hide");
+    document.body.style.overflowY = "auto";
+  };
+
+  modalOpenTriggers.forEach((btn) => {
+    btn.addEventListener("click", showModal);
+  });
+
+  modalCloseTrigger.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target && e.target === modal) {
+      closeModal();
+    };
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.matches (".show")) {
+      closeModal()
+    };
+  });
+  const modalTimerId = setTimeout(showModal, 5000); 
+  function showModalByScroll (){
+    if(window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+      showModal();
+      window.removeEventListener("scroll", showModalByScroll)
+  } }
+
+  window.addEventListener("scroll", showModalByScroll)
+
+
+
+  //modal end
 });
