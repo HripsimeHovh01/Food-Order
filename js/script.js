@@ -129,9 +129,81 @@ function showModal(){
       window.removeEventListener("scroll", showModalByScroll)
   } }
 
-  window.addEventListener("scroll", showModalByScroll)
-
-
-
+  window.addEventListener("scroll", showModalByScroll);
   //modal end
 });
+
+
+
+// Menu start
+class MenuItem {
+  constructor(subtitle, description, price, image, text) {
+    this.subtitle = subtitle;
+    this.description = description;
+    this.price = price;
+    this.image = image;
+    this.text = text;
+  }
+
+  render() {
+    const menuItem = document.createElement("div");
+    menuItem.classList.add("menu__item");
+
+    menuItem.innerHTML = `
+      <img src="${this.image}" alt="${this.text}">
+      <h3 class="menu__item-subtitle">${this.subtitle}</h3>
+      <div class="menu__item-descr">${this.description}</div>
+      <div class="menu__item-divider"></div>
+      <div class="menu__item-price">
+        <div class="menu__item-cost">Цена:</div>
+        <div class="menu__item-total"><span>${this.price}</span>грн/день</div>
+      </div>`;
+    return menuItem;
+  }
+}
+
+class FitnessMenu extends MenuItem {
+  constructor() {
+    super(
+      "Меню “Фитнес”",
+      "Меню “Фитнес” - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!",
+      229,
+    "img/tabs/vegy.jpg",
+      "Fitness Menu"
+    );
+  }
+}
+
+class PremiumMenu extends MenuItem {
+  constructor() {
+    super(
+      "Меню “Премиум”",
+      "В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!",
+      550,
+      "img/tabs/elite.jpg",
+      "Premium Menu"
+    );
+  }
+}
+
+class PostMenu extends MenuItem {
+  constructor() {
+    super(
+      "Меню “Постное ”",
+      "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.",
+      430,
+      "img/tabs/post.jpg",
+      "Post Menu"
+    );
+  }
+}
+const menuContainer = document.querySelector(".menu__field");
+
+const fitnessMenu = new FitnessMenu();
+const premiumMenu = new PremiumMenu();
+const postMenu = new PostMenu();
+
+menuContainer.appendChild(fitnessMenu.render());
+menuContainer.appendChild(premiumMenu.render());
+menuContainer.appendChild(postMenu.render());
+// Menu end
