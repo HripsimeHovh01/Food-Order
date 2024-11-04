@@ -130,10 +130,9 @@ function showModal(){
   } }
 
   window.addEventListener("scroll", showModalByScroll);
+
   //modal end
 });
-
-
 
 // Menu start
 class MenuItem {
@@ -198,3 +197,44 @@ new MenuItem(
 ).render();
 
 // Menu end
+
+// Forms
+
+const forms = document.querySelectorAll("form");
+
+    const messages = {
+        loading: "Loading...",
+        success: "Accepted",
+        failure: "Failed"
+    }; 
+
+    forms.forEach(form => postData(form))
+    
+    function postData(form) {
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const statusMessage = document.createElement("p")
+            statusMessage.classList.add("status_message");
+            statusMessage.textContent = messages.loading;
+            form.append(statusMessage)
+            const request = new XMLHttpRequest();
+            request.open("POST", "server.php");
+            
+            // request.setRequestHeader('Content-type', 'multipart/form-data')
+            request.setRequestHeader("Content-type", "application/json; charset=UTF-8")
+            const data = JSON.stringify(Object.fromEntries(new FormData(form)))
+            request.send(data)
+            request.addEventListener("load", function () {
+                if (request.status === 200) {
+                    statusMessage.textContent = messages.success;
+                    form.reset();
+                    setTimeout(() => {
+                        statusMessage.remove()
+                    }, 2000);
+                } else {
+                    statusMessage.textContent = messages.failure
+                }
+            })
+        });
+    };
